@@ -5,9 +5,10 @@
 		var url = Observable()
 		
 		//extract every file that isn't the entrypoint
-		Promise.all([BundleUnpacker.unpack('assets/local/image.jpg')])
+		var filesToUnpack = ['assets/local/image.jpg']
+		Promise.all(filesToUnpack.map(function(path){ return BundleUnpacker.unpack(path) }))
 			.then(function(){
-				//then extract the entrypoint...
+				// extract the entrypoint...
 				return BundleUnpacker.unpack('assets/local/index.html')
 			})
 			.then(function(fileUrl){
