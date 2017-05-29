@@ -1,0 +1,28 @@
+<App>
+	<JavaScript>
+		var Observable = require('FuseJS/Observable')
+		var BundleUnpacker = require('BundleUnpacker')
+		var url = Observable()
+		
+		//extract every file that isn't the entrypoint
+		Promise.all([BundleUnpacker.unpack('assets/local/image.jpg')])
+			.then(function(){
+				//then extract the entrypoint...
+				return BundleUnpacker.unpack('assets/local/index.html')
+			})
+			.then(function(fileUrl){
+				//and use its url 
+				url.value = fileUrl
+			})
+			.catch(function(error){
+				console.log(error)
+			})
+			
+		module.exports.url = url
+	</JavaScript>
+  <ClientPanel>
+		<NativeViewHost>
+			<WebView Url="{url}"/>
+		</NativeViewHost>
+  </ClientPanel>
+</App>
